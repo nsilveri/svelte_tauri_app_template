@@ -1,7 +1,8 @@
 {
-	"name": "tauri-sveltekit",
-	"version": "0.0.1",
+	"name": "svelte-tauri-template",
+	"version": "1.0.0",
 	"private": true,
+	"description": "A modern template for Svelte + Tauri applications",
 	"scripts": {
 		"dev": "npm run tauri dev",
 		"build": "npm run tauri build",
@@ -35,13 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sveltestrap/sveltestrap": "^7.1.0",
 		"@tauri-apps/api": "^2.8.0",
-		"@tauri-apps/plugin-dialog": "^2.4.0",
-		"bootstrap": "^5.3.8",
-		"bootstrap-icons": "^1.13.1",
-		"sortablejs": "^1.15.6",
-		"svelte-i18n": "^4.0.1",
-		"tablesort": "^5.6.0"
+		"svelte-i18n": "^4.0.1"
 	}
 }

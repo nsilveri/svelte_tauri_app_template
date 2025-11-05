@@ -1,44 +1,153 @@
-# SilCheat - Cheat Code Manager
+# Svelte + Tauri Template
 
-![alt text](image/home.png)
+Un template moderno per creare applicazioni desktop con Svelte e Tauri.
 
-SilCheat is a desktop application to manage and organize cheat codes for your favorite games. It lets you import, edit and reorder cheats in a simple and intuitive way.
+## 🚀 Caratteristiche
 
-## Main Features
+- **Svelte 5** - Framework reattivo e performante
+- **Tauri** - Backend nativo e impacchettamento desktop
+- **TailwindCSS** - Styling moderno e responsive  
+- **Internazionalizzazione** - Supporto multilingua con svelte-i18n
+- **Layout Responsive** - Si adatta a diverse dimensioni schermo
+- **Navigazione** - 3 pagine di esempio (Home, Settings, About)
+- **Design Moderno** - Interfaccia pulita con effetti glassmorphism
+- **TypeScript Support** - Configurazione TypeScript pronta all'uso
 
-- **CHT File Import**: Easily load `.cht` files that contain cheat codes to populate your tables.
-![alt text](image/add_new_cht_1.png)
-![alt text](image/add_new_cht_2.png)
+## 📦 Struttura del Progetto
 
-- **Table Management**: Create and organize separate tables for each game to keep everything tidy.
-![alt text](image/cht_view.png)
+```
+src/
+├── lib/
+│   └── i18n/           # File di traduzione
+│       ├── index.js
+│       ├── en.json
+│       └── it.json
+└── routes/
+    ├── +layout.svelte  # Layout principale con navigazione
+    ├── +page.svelte    # Redirect alla home
+    ├── home/
+    │   └── +page.svelte
+    ├── settings/
+    │   └── +page.svelte
+    └── about/
+        └── +page.svelte
+```
 
-- **Move Cheats**: Select and change the position of a cheat.
-![alt text](image/select_and_move.png)
-![alt text](image/moved_cheat.png)
+## 🛠️ Installazione
 
-- **View and Edit**: See details for each cheat, edit them or add new ones.
-![alt text](image/cheat_view.png)
+1. **Clona il template**
+   ```bash
+   git clone <repository-url>
+   cd svelte-tauri-template
+   ```
 
-- **Single and Bulk Add**: Add a single cheat or use "Magic add" to paste multiple cheats as free text.
-![alt text](image/create_one_new_cheat.png)
-![alt text](image/magic_add_cheat.png)
-![alt text](image/cheat_added_with_magic_cheat.png)
+2. **Installa le dipendenze**
+   ```bash
+   npm install
+   ```
 
-- **Export**: Save your tables as `.cht` files to share or use elsewhere.
-![alt text](image/export_cht.png)
+3. **Avvia in modalità sviluppo**
+   ```bash
+   npm run dev
+   ```
 
-- **Logo Download**: Download logo/boxart from external services (RAWG / TheGamesDB) and set them as the table image.
-![alt text](image/add_image.png)
+4. **Build per produzione**
+   ```bash
+   npm run build
+   ```
 
-- **Localization (i18n)**: UI texts available in Italian and English (`src/lib/i18n/{it.json,en.json}`); the backend returns i18n keys that are translated by the UI.
-![alt text](image/setting_page.png)
+## 🎨 Personalizzazione
+
+### Aggiungere nuove pagine
+
+1. Crea una nuova cartella in `src/routes/`
+2. Aggiungi un file `+page.svelte`
+3. Aggiorna la navigazione in `+layout.svelte`
+
+### Modificare i colori e lo stile
+
+Il template usa TailwindCSS. Puoi:
+- Modificare `tailwind.config.js` per personalizzare i colori
+- Aggiornare le classi CSS nei componenti
+- Cambiare i gradienti di sfondo nelle pagine
+
+### Aggiungere nuove lingue
+
+1. Aggiungi un nuovo file JSON in `src/lib/i18n/`
+2. Importalo in `src/lib/i18n/index.js`
+3. Aggiorna le opzioni lingua nelle impostazioni
+
+### Configurare Tauri
+
+- Modifica `src-tauri/tauri.conf.json` per:
+  - Cambiare nome e icona dell'app
+  - Configurare finestre e permessi
+  - Aggiungere plugin Tauri
+
+## 📝 Scripts Disponibili
+
+- `npm run dev` - Avvia sviluppo con hot reload
+- `npm run build` - Build di produzione
+- `npm run preview` - Anteprima build locale
+- `npm run check` - Controllo TypeScript/Svelte
+- `npm run lint` - Linting del codice
+- `npm run format` - Formattazione automatica
+
+## 🔧 Configurazione
+
+### Tauri
+Configurazione principale in `src-tauri/tauri.conf.json`:
+- Cambia `productName` per il nome dell'app
+- Modifica `identifier` per un ID univoco
+- Personalizza icone in `src-tauri/icons/`
+
+### SvelteKit
+Configurazione in `svelte.config.js`:
+- Adapter statico per Tauri configurato
+- Prerendering abilitato
+
+### TailwindCSS
+Configurazione in `tailwind.config.js`:
+- Content paths configurati per Svelte
+- Plugin base inclusi
+
+## 🚀 Deploy
+
+Per creare un eseguibile:
+
+```bash
+npm run build
+```
+
+I file generati saranno in `src-tauri/target/release/`.
+
+## 📱 Piattaforme Supportate
+
+- Windows
+- macOS  
+- Linux
+
+## 🤝 Contribuzioni
+
+Le contribuzioni sono benvenute! Sentiti libero di:
+- Aprire issue per bug o suggerimenti
+- Creare pull request per miglioramenti
+- Condividere il template
+
+## 📄 Licenza
+
+MIT License - vedi [LICENSE](LICENSE) per i dettagli.
+
+## 🙏 Ringraziamenti
+
+- [Svelte](https://svelte.dev/) - Il framework web
+- [Tauri](https://tauri.app/) - Il toolkit per app native
+- [TailwindCSS](https://tailwindcss.com/) - Il framework CSS
+- [svelte-i18n](https://github.com/kaisermann/svelte-i18n) - Libreria i18n
 
 ---
 
-## Recent changes (changelog)
-
-Below is an extended summary of recent modifications (frontend and backend), test instructions and developer notes.
+**Buon sviluppo! 🎉**
 
 ### Key changes
 

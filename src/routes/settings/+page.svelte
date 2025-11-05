@@ -1,53 +1,36 @@
 <script>
-	import { onMount } from 'svelte';
+	import { locale, _ } from 'svelte-i18n';
 	import { invoke } from '@tauri-apps/api/core';
-	import { _ } from 'svelte-i18n';
-	import { locale } from 'svelte-i18n';
 
 	let theme = "light";
 	let notifications = true;
-	let apiKey = "";
-	let apiService = "thegamesdb";
-	let language = "en";
+	let language = $locale || "en";
 	let showToast = false;
 	let toastMsg = '';
 	let toastType = 'success';
 
-	onMount(async () => {
-		try {
-			apiKey = await invoke('get_setting', { key: 'thegamesdb_api_key' });
-			apiService = await invoke('get_setting', { key: 'api_service' }) || 'thegamesdb';
-			language = await invoke('get_setting', { key: 'language' }) || 'en';
-			$locale = language;
-		} catch (e) {
-			console.error('Errore nel caricamento delle impostazioni:', e);
-		}
-	});
-
 	async function saveSettings() {
 		try {
-			await invoke('set_setting', { key: 'thegamesdb_api_key', value: apiKey });
-			await invoke('set_setting', { key: 'api_service', value: apiService });
-			await invoke('set_setting', { key: 'language', value: language });
+			// Salva le impostazioni usando Tauri
+			await invoke('save_setting', { key: 'language', value: language });
+			await invoke('save_setting', { key: 'theme', value: theme });
+			await invoke('save_setting', { key: 'notifications', value: notifications.toString() });
+			
+			// Aggiorna la lingua immediatamente
 			$locale = language;
+			
+			// Salva anche in localStorage per il caricamento veloce
+			if (typeof window !== 'undefined') {
+				localStorage.setItem('language', language);
+			}
+			
 			toastMsg = $_('settings.settings_saved');
 			toastType = 'success';
 			showToast = true;
 			setTimeout(() => { showToast = false; }, 2500);
-		} catch (e) {
-			toastMsg = $_('settings.error_saving') + e;
-			toastType = 'error';
-			showToast = true;
-			setTimeout(() => { showToast = false; }, 2500);
-		}
-	}
-
-	async function openAPIWebsite() {
-		const url = apiService === 'thegamesdb' ? 'https://thegamesdb.net/' : 'https://rawg.io/apidocs';
-		try {
-			await invoke('open_url', { url });
-		} catch (e) {
-			toastMsg = $_('settings.error_opening_link') + e;
+		} catch (error) {
+			console.error('Errore nel salvare le impostazioni:', error);
+			toastMsg = 'Errore nel salvare le impostazioni';
 			toastType = 'error';
 			showToast = true;
 			setTimeout(() => { showToast = false; }, 2500);
@@ -69,31 +52,43 @@
 	</header>
 	<main class="flex-grow flex justify-center items-center px-4">
 		<div class="max-w-lg w-full bg-white/90 backdrop-blur-sm rounded-lg border border-white/20 p-8 shadow-lg">
+			<h2 class="text-xl font-bold text-gray-900 mb-6 text-center">{$_('settings.title')}</h2>
 			<form class="space-y-6">
 				<div class="text-left">
-					<label class="block font-medium mb-1">{$_('settings.api_service')}</label>
-					<select bind:value={apiService} class="border rounded px-3 py-2 w-full">
-						<option value="thegamesdb">{$_('settings.thegamesdb')}</option>
-						<option value="rawg">{$_('settings.rawg')}</option>
+					<label for="theme-select" class="block font-medium mb-2 text-gray-700">{$_('settings.theme')}</label>
+					<select id="theme-select" bind:value={theme} class="border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+						<option value="light">{$_('settings.light')}</option>
+						<option value="dark">{$_('settings.dark')}</option>
 					</select>
 				</div>
+				
 				<div class="text-left">
-					<label class="block font-medium mb-1">{$_('settings.api_key')} {apiService === 'thegamesdb' ? $_('settings.thegamesdb') : $_('settings.rawg')}</label>
-					<input type="password" bind:value={apiKey} placeholder="Inserisci la tua chiave API" class="border rounded px-3 py-2 w-full" />
-					<p class="text-sm text-gray-600 mt-1">
-						{$_('settings.get_key')}
-						<button class="text-blue-500 underline" on:click={openAPIWebsite}>{apiService === 'thegamesdb' ? 'thegamesdb.net' : 'rawg.io'}</button>
-					</p>
-				</div>
-				<div class="text-left">
-					<label class="block font-medium mb-1">{$_('settings.language')}</label>
-					<select bind:value={language} class="border rounded px-3 py-2 w-full">
+					<label for="language-select" class="block font-medium mb-2 text-gray-700">{$_('settings.language')}</label>
+					<select id="language-select" bind:value={language} class="border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent">
 						<option value="en">{$_('settings.english')}</option>
 						<option value="it">{$_('settings.italian')}</option>
 					</select>
 				</div>
+				
+				<div class="text-left">
+					<label class="flex items-center">
+						<input type="checkbox" bind:checked={notifications} class="rounded mr-2 focus:ring-2 focus:ring-blue-500" />
+						<span class="font-medium text-gray-700">{$_('settings.enable_notifications')}</span>
+					</label>
+					<p class="text-sm text-gray-500 mt-1">{$_('settings.notifications')}</p>
+				</div>
+				
+				<div class="pt-4 border-t border-gray-200">
+					<h3 class="font-medium text-gray-700 mb-2">{$_('about.template_info')}</h3>
+					<div class="space-y-1 text-sm text-gray-600">
+						<p><strong>{$_('about.version')}:</strong> 1.0.0</p>
+						<p><strong>Framework:</strong> Svelte + Tauri</p>
+						<p><strong>License:</strong> MIT</p>
+					</div>
+				</div>
+				
 				<div class="mt-6 text-center">
-					<button type="button" on:click={saveSettings} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2">
+					<button type="button" on:click={saveSettings} class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg flex items-center gap-2 mx-auto transition-colors">
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
 						</svg>

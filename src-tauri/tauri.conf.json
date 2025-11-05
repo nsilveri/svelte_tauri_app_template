@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "productName": "SilCheat",
-  "version": "0.1.0",
-  "identifier": "com.silcheat.app",
+  "productName": "Svelte Tauri Template",
+  "version": "1.0.0",
+  "identifier": "com.template.svelte-tauri",
   "build": {
     "beforeBuildCommand": "npm run sveltekit:build",
     "beforeDevCommand": "npm run sveltekit:dev",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "SilCheat",
+        "title": "Svelte Tauri Template",
         "width": 800,
         "height": 600,
         "resizable": true
