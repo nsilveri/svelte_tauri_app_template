@@ -24,7 +24,7 @@
   </header>
 
   <!-- MAIN CONTENT -->
-  <main class="flex-grow pt-5 px-5 mb-8" style="margin-top: 6rem; margin-bottom: 2rem;">
+  <main class="flex-grow pt-5 px-5 mb-8" style="margin-top: 6rem; margin-bottom: 5rem;">
     <div class="w-full h-full overflow-y-auto grid gap-4 pb-20" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); scrollbar-width: thin;">
       {#each exampleCards as card}
         <div class="bg-white/90 backdrop-blur-sm rounded-lg border border-white/20 p-6 text-center shadow-lg">
