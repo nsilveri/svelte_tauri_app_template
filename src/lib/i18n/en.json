@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Home Page",
+    "title": "Home",
     "description": "This is an example page of the template",
     "welcome_title": "Welcome to the Template",
     "welcome_description": "This is the Home page of the template. You can customize this content according to your needs. The layout includes a responsive grid and example cards that you can modify or replace with your content.",
@@ -13,7 +13,7 @@
     "example_action": "Example Action",
     "loading": "Loading..."
   },
-  "settings": {
+    "settings": {
     "title": "Settings",
     "description": "This is an example page for settings.",
     "language": "Language",
@@ -25,7 +25,35 @@
     "light": "Light",
     "dark": "Dark",
     "notifications": "Notifications",
-    "enable_notifications": "Enable notifications"
+    "enable_notifications": "Enable notifications",
+    "database":{
+      "create_database": "Create Database",
+      "database_name": "Database Name",
+      "database_name_fixed": "The database name is fixed and cannot be changed",
+      "host": "Host",
+      "port": "Port",
+      "test_connection": "Test Connection",
+      "save_db_settings": "Save"
+    },
+    "header_settings": {
+      "database_settings": "Database Settings",
+      "postgresql_connection_ok": "Postgres: connected",
+      "postgresql_connection_not_ok": "Postgres: not connected"
+    },
+    "machine_management": {
+      "title": "Machine Management",
+      "machine_list": "Machine List",
+      "new_machine": "New Machine",
+      "existing_machines": "Machines",
+      "edit_machine": "Edit Machine",
+      "work_types": "Work Types"
+    },
+    "user_management": {
+      "title": "Users management",
+      "users_button": "Users",
+      "user_list": "Users management",
+      "edit_user": "Edit user"
+    }
   },
   "about": {
     "title": "About",

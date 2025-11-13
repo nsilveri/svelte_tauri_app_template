@@ -1,5 +1,17 @@
 <script>
   import { _ } from 'svelte-i18n';
+  import { onMount } from 'svelte';
+
+  // Current time
+  let currentTime = '';
+
+	function updateTime() {
+		currentTime = new Date().toLocaleString();
+	}  onMount(() => {
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  });
 </script>
 
 <div class="relative min-h-screen flex flex-col" style="min-height: 100vh;">
@@ -9,7 +21,7 @@
 			<div class="mb-1">
 				<h1 class="text-2xl font-semibold text-gray-900 mb-1">{$_('about.title')}</h1>
 				<p class="text-gray-700">
-					{$_('about.description')}
+					{currentTime}
 				</p>
 			</div>
 		</div>
@@ -18,12 +30,12 @@
 		<div class="max-w-4xl mx-auto space-y-8">
 
 			<!-- Welcome Section -->
-			<div class="bg-white/90 backdrop-blur-sm rounded-lg border border-white/20 p-8 shadow-lg">
+			<div class="bg-white/90 backdrop-blur-sm rounded-lg border border-black/50 p-8 shadow-lg">
 				<div class="flex flex-col md:flex-row items-center gap-6">
 					<div class="flex-1">
 						<h2 class="text-3xl font-bold text-gray-900 mb-4">{$_('home.welcome_title')}</h2>
 						<p class="text-lg text-gray-700 leading-relaxed">
-							{$_('about.description_long')}
+							{currentTime}
 						</p>
 					</div>
 					<div class="flex-shrink-0">
@@ -37,7 +49,7 @@
 			</div>
 
 			<!-- Features -->
-			<div class="bg-white/90 backdrop-blur-sm rounded-lg border border-white/20 p-8 shadow-lg">
+			<div class="bg-white/90 backdrop-blur-sm rounded-lg border border-black/50 p-8 shadow-lg">
 				<h2 class="text-2xl font-bold text-gray-900 mb-6">{$_('about.features')}</h2>
 
 				<div class="grid md:grid-cols-2 gap-6">
@@ -136,7 +148,7 @@
 			</div>
 
 			<!-- Getting Started -->
-			<div class="bg-white/90 backdrop-blur-sm rounded-lg border border-white/20 p-8 shadow-lg">
+			<div class="bg-white/90 backdrop-blur-sm rounded-lg border border-black/50 p-8 shadow-lg">
 				<div class="flex flex-col md:flex-row items-center gap-6">
 					<div class="flex-1">
 						<h2 class="text-2xl font-bold text-gray-900 mb-4">Come Iniziare</h2>

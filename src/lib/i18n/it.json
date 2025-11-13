@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Pagina Home",
+    "title": "Home",
     "description": "Questa è una pagina d'esempio del template",
     "welcome_title": "Benvenuto nel Template",
     "welcome_description": "Questa è la pagina Home del template. Puoi personalizzare questo contenuto secondo le tue esigenze. Il layout include una griglia responsive e card di esempio che puoi modificare o sostituire con i tuoi contenuti.",
@@ -25,7 +25,35 @@
     "light": "Chiaro",
     "dark": "Scuro",
     "notifications": "Notifiche",
-    "enable_notifications": "Abilita notifiche"
+    "enable_notifications": "Abilita notifiche",
+    "database":{
+      "create_database": "Crea Database",
+      "database_name": "Nome Database",
+      "database_name_fixed": "Il nome del database è fisso e non può essere modificato",
+      "host": "Host",
+      "port": "Porta",
+      "test_connection": "Test Connessione",
+      "save_db_settings": "Salva"
+    },
+    "header_settings": {
+      "database_settings": "Impostazioni Database",
+      "postgresql_connection_ok": "Postgres: connesso",
+      "postgresql_connection_not_ok": "Postgres: non connesso"
+    },
+    "machine_management": {
+      "title": "Gestione Macchine",
+      "machine_list": "Elenco Macchine",
+      "new_machine": "Nuova Macchina",
+      "existing_machines": "Macchine",
+      "edit_machine": "Modifica Macchina",
+      "work_types": "Tipi di lavorazione"
+    },
+    "user_management": {
+      "title": "Gestione utenti",
+      "users_button": "Utenti",
+      "user_list": "Gestione Utenti",
+      "edit_user": "Modifica Utente"
+    }
   },
   "about": {
     "title": "Informazioni",

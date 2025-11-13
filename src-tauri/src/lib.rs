@@ -1,65 +1,76 @@
-// Template per Svelte + Tauri
-// Aggiungi qui le tue funzioni Tauri personalizzate
+// ====== Import standard ======
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::collections::HashMap;
-use std::sync::Mutex;
-use once_cell::sync::Lazy;
+mod machines;
+mod config;
+mod settings;
+mod users;
+mod sync;
+mod work_types;
 
-// Simuliamo un semplice storage delle impostazioni
-static SETTINGS: Lazy<Mutex<HashMap<String, String>>> = Lazy::new(|| {
-    Mutex::new(HashMap::new())
-});
+// ====== TAURI COMMANDS ======
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Ciao, {}! Questo è un template Svelte + Tauri.", name)
-}
-
-#[tauri::command]
-fn get_app_info() -> HashMap<String, String> {
-    let mut info = HashMap::new();
-    info.insert("name".to_string(), "Svelte Tauri Template".to_string());
-    info.insert("version".to_string(), "1.0.0".to_string());
-    info.insert("description".to_string(), "Un template moderno per applicazioni desktop".to_string());
-    info
-}
-
-#[tauri::command]
-fn save_setting(key: String, value: String) -> Result<String, String> {
-    match SETTINGS.lock() {
-        Ok(mut settings) => {
-            settings.insert(key.clone(), value.clone());
-            Ok(format!("Impostazione '{}' salvata con valore '{}'", key, value))
-        }
-        Err(_) => Err("Errore nel salvataggio dell'impostazione".to_string())
-    }
-}
-
-#[tauri::command]
-fn get_setting(key: String) -> Result<String, String> {
-    match SETTINGS.lock() {
-        Ok(settings) => {
-            match settings.get(&key) {
-                Some(value) => Ok(value.clone()),
-                None => {
-                    // Valori di default
-                    match key.as_str() {
-                        "language" => Ok("en".to_string()),
-                        "theme" => Ok("light".to_string()),
-                        "notifications" => Ok("true".to_string()),
-                        _ => Err(format!("Impostazione '{}' non trovata", key))
-                    }
-                }
-            }
-        }
-        Err(_) => Err("Errore nel recupero dell'impostazione".to_string())
-    }
-}
-
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
+// ====== TAURI APP ENTRYPOINT ======
 pub fn run() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, get_app_info, save_setting, get_setting])
+        .setup(|app| {
+            // Initialize database pool on app startup
+            tauri::async_runtime::spawn(async {
+                // Initialize both machines and users database pools (they share the same pool)
+                if let Err(e) = machines::get_or_init_db_pool().await {
+                    eprintln!("Errore inizializzazione pool database: {}", e);
+                } else {
+                    println!("Pool database inizializzato correttamente");
+                }
+
+                // Also initialize SQLite for caching
+                if let Err(e) = sync::init_sqlite_db().await {
+                    eprintln!("Errore inizializzazione database SQLite: {}", e);
+                } else {
+                    println!("Database SQLite inizializzato correttamente");
+                }
+            });
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            machines::add_new_machine,
+            machines::get_machines,
+            machines::get_machine,
+            machines::update_machine,
+            machines::delete_machine,
+            machines::ping_machine,
+            machines::select_machine_image,
+            machines::get_available_databases,
+            machines::check_database_connection,
+            machines::test_db_connection,
+            settings::save_setting,
+            settings::get_setting,
+                config::create_database,
+                config::check_database_exists,
+                users::register_user,
+                users::login_user,
+                users::get_user_profile,
+                users::update_user_profile,
+                users::get_all_users,
+                users::delete_user,
+                users::update_user,
+                users::select_user_image,
+                sync::get_cached_users,
+                sync::sync_users,
+                sync::check_sync_status,
+                sync::get_cached_machines,
+                sync::sync_machines,
+                sync::get_cached_work_types,
+                sync::sync_work_types,
+                sync::start_sync_watcher,
+                work_types::get_work_types,
+                work_types::get_work_type,
+                work_types::add_work_type,
+                work_types::update_work_type,
+                work_types::delete_work_type,
+                work_types::select_work_type_image,
+                work_types::load_image_from_path
+        ])
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .expect("error while running tauri app");
 }
